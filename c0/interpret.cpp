@@ -27,9 +27,9 @@ fct string_to_fct(string s){
 }
 
 struct instruction {
-    enum fct f;
-    int l;
-    int a;
+    enum fct f;     // 操作码
+    int l;          // 层数
+    int a;          // 值
 }code[codemaxsize];
 
 int base(int, int*, int);
@@ -62,8 +62,107 @@ int main(){
     for (int i = 0; i < instructionsum; i++)
         cout<<"("<<i<<") "<<code[i].f<<" "<<code[i].l<<" "<<code[i].a<<endl;
 
-    // interpret();
+    interpret();
     system("pause");
     return 0;
 }
 
+
+void interpret(){
+    int p;                  // 指令寄存器
+    int b;                  // 基址寄存器
+    int t;                  // 栈顶寄存器
+    struct instruction i;   // 虚拟机代码段
+    int s[stacksize];
+
+    cout << "----------start----------\n";
+    t = 0; b = 0; p = 0;
+    s[0] = s[1] = s[2] = 0;
+    do {
+        i = code[p];
+        p++;
+        switch (i.f){
+        case LIT:
+            s[t] = i.a;
+            t++;
+            break;
+        case LOD:
+            if(i.a==0&&i.l==0){ // LOD 0 0
+                s[t]=s[0];
+                t++;
+            }
+            else{
+                s[t] = s[base(i.l, s, b) + i.a];
+                t++;
+            }
+            break;
+        case STO:
+            t--;
+            if(i.a==0&&i.l==0){ // STO 0 0
+                s[0]=s[t];
+            }
+            else
+            s[base(i.l, s, b) + i.a] = s[t];
+            break;
+        case CAL:           //存放当前信息, 更新指针地址
+            s[t] = b;       // 基址入栈
+            s[t + 1] = 0;   // 初始化本过程的基址
+            s[t + 2] = p;   // 当前指令指针入栈
+            b = t;          // 改变基地址指针为新过程的基地址
+            p = i.a;        // 跳转
+            break;
+        case INT:
+            t += i.a;
+            break;
+        case JMP:
+            p = i.a;
+            break;
+        case JPC:
+            t--;
+            if (s[t] == 0)
+                p = i.a;
+            break;
+        case ADD:
+            t--;
+            s[t - 1] = s[t] + s[t - 1];
+            break;
+        case SUB:
+            t--;
+            s[t - 1] = s[t - 1] - s[t];
+            break;
+        case MUL:
+            t--;
+            s[t - 1] = s[t - 1] * s[t];
+            break;
+        case DIV:
+            t--;
+            s[t - 1] = s[t - 1] / s[t];
+            break;
+        case RED:
+            cin >> s[t];
+            t++;
+            break;
+        case WRT:
+            cout << s[t - 1]<<endl;
+            t--;
+            break;
+        case RET:
+            t = b;
+            p = s[t + 2];
+            b = s[t];
+            if (b == 0)
+                return;
+            break;
+        }
+    } while (p != 0);
+}
+
+int base(int l, int* s, int b){
+    int bt;
+    bt = b;
+    while (l > 0){
+        bt = s[bt];
+        l--;
+    }
+    return bt; // 求得上层过程的基址
+}
