@@ -146,7 +146,7 @@ void interpret(){
                 t = b;
                 p = s[t + 2];
                 b = s[t];
-                if (p == 0) return;         /* NOTE: if b==0: return 0*/
+                if (p == 0) return 0;         /* NOTE: if b==0: return 0; call will not return!!!*/
                 break;
         }
     //    for(int i=0; i<stacksize; i++) cout<<s[i]<<' '; cout<<endl; /*TEST Stack*/
