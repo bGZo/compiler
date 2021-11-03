@@ -1,4 +1,4 @@
-# Complier Set
+# Compiler Set
 
-- [ ] C0 complier
-- [ ] Stone complier
+- [ ] C0 compiler
+- [ ] Stone compiler
