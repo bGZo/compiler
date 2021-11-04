@@ -2,7 +2,7 @@
 #include<fstream>
 #include<string>
 #include<sstream>
-#define codemaxsize 500
+#define codemaxsize 1000
 #define stacksize 50
 using namespace std;
 
