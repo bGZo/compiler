@@ -1,0 +1,29 @@
+int a, b;
+int c, d, e, f;
+
+void A(){
+    c=a+b;
+    d=a-b;
+    e=a*b;
+    f=a/b;
+}
+void B(){
+    int a;
+    scanf(a);
+    int b=1;
+    while(a!=0){
+        b=b*a;
+        a=a-1;
+    }
+    printf(a);
+}
+void main(){
+    scanf(a);
+    scanf(b);
+    A();
+    printf(c);
+    printf(d);
+    printf(e);
+    printf(f);
+    B();
+}
