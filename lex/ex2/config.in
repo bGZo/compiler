@@ -1,0 +1,4 @@
+db_type: oracle
+db_name: testdata
+db_table_prefix: test_
+db_port: a7890
