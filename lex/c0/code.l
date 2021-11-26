@@ -73,7 +73,7 @@ void print_out(char type){printf("%s : %c, (%d,%d)\n",yytext,type,line,col);}
 int main(int argc,char** argv){
     FILE * fIn;
     switch(argc){
-        case 1: /*打开缺省文件*/
+        case 1: /*缺省*/
             fIn=fopen("config.in","r");
             if(fIn==NULL){
                 printf("default file is not found\n");
@@ -81,7 +81,7 @@ int main(int argc,char** argv){
             }
             else yyin=fIn;
             break;
-        case 2: /*打开指定文件*/
+        case 2: /*指定*/
             if ((fIn = fopen(argv[1],"r")) == NULL) {
                     printf("File %s is not found.\n",argv[1]);
                     exit(1);
