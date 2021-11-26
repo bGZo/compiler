@@ -18,12 +18,16 @@ void B(){
     printf(a);
 }
 void main(){
+    g="a";
+    h='b';
     scanf(a);
     scanf(b);
-    A();
+    if(a!=0){A()};
+    else return 0;
     printf(c);
     printf(d);
     printf(e);
     printf(f);
     B();
+    return 0;
 }
