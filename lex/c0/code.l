@@ -16,7 +16,7 @@ return_         [\r]
 col_8           [\t]
 char            (\'[^ \n\r\t]\')
 string          (\".{2,}\")
-illegal         ([^a-zA-Z1-9\t\n>=<:\'\(\)\;\[\]\.\!\+\-\/\*\"\,]+)
+illegal         ([^a-zA-Z1-9\t\n>=<:\'\(\)\;\[\]\.\!\+\-\/\*\"\,]+\{\})
 
 
 %%
@@ -28,7 +28,7 @@ if|then|while|do|read|write|call|begin|end|const|var|procedure|odd|for|to|repeat
 {return_}       {print_out('T');col = 1;}               /*\r返回当前行第一列*/
 {col_8}         {print_out('T');col += 8;}              /*制表符列加8*/
 
-{integer}|{real} {                                      /*检查长度*/
+{integer}|{real}{                                      /*检查长度*/
     if(yyleng > 14){
         printf("Error! The length of this number is too long!\n");
         exit(0);
@@ -36,7 +36,7 @@ if|then|while|do|read|write|call|begin|end|const|var|procedure|odd|for|to|repeat
     print_out('C');col = col + yyleng;
 }
 
-{char} {
+{char}{
     if(yyleng > 3){                                     /*char类型  长度为3*/
         printf("The length of char must be 1.");
         exit(0);
@@ -44,7 +44,7 @@ if|then|while|do|read|write|call|begin|end|const|var|procedure|odd|for|to|repeat
     print_out('K'); col = col + yyleng;
 }
 
-{identifier} {
+{identifier}{
     /*检查长度是否超出范围*/
     if(yyleng > 10){
         printf("Error! The length of this idetifier is too long!\n");
@@ -52,12 +52,13 @@ if|then|while|do|read|write|call|begin|end|const|var|procedure|odd|for|to|repeat
     }
     print_out('I');col = col + yyleng;
 }
-{string} {
+{string}{
     print_out('K'); col = col + yyleng;
 }
 "+"|"-"|"*"|"/"|"#"|"<"|">"|"="|"<>"|"!="|">="|"<="|":="    {print_out('O');col = col + yyleng;} /*算符*/
-"\["|"("|")"|","|":"|";"|"."|"\]"|".."        { print_out('D');col = col + yyleng;} /*界符*/
-{illegal} {
+"\["|"("|")"|","|":"|";"|"."|"\]"|".."|"{"|"}"        { print_out('D');col = col + yyleng;} /*界符*/
+
+{illegal}{
     /*含有非法字符的字符串*/
     /*数字开头的identifier*/
     /*real里是错误类型*/
@@ -66,15 +67,12 @@ if|then|while|do|read|write|call|begin|end|const|var|procedure|odd|for|to|repeat
 }
 %%
 
-void print_out(char type)
-{
+void print_out(char type){
      printf("%s : %c, (%d,%d)\n",yytext,type,line,col);
 }
 
-int main(int argc,char** argv)
-{
-
-    FILE * fIn;            
+int main(int argc,char** argv){
+    FILE * fIn;
     switch(argc)
     {
     case 1:             //打开缺省文件        
@@ -97,8 +95,7 @@ int main(int argc,char** argv)
         exit(1);
     }
     yylex();
-      
-    
+
     fclose(fIn);
     return 0;
 
