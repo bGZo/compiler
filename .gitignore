@@ -1,2 +1,7 @@
+.idea/
+out/
+
+*.txt
+
 *.yy.c
 *.out

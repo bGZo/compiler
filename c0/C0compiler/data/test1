@@ -1,0 +1,17 @@
+int a, b;
+int c, d, e, f;
+void A(){
+    c=a+b;
+    d=a-b;
+    e=a*b;
+    f=a/b;
+}
+void main(){
+    scanf(a);
+    scanf(b);
+    A();
+    printf(c);
+    printf(d);
+    printf(e);
+    printf(f);
+}

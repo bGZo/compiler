@@ -1,0 +1,11 @@
+
+void main(){
+    int a, b;
+    scanf(a);
+    b = 1;
+    while(a){
+        b=b*a;
+        a=a-1;
+    }
+    printf(b);
+}
